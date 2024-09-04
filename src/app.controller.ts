@@ -1,19 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
-import { ExceptionConstants } from '@core/exceptions/constants';
-import { BadRequestException } from '@core/exceptions';
+import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { IResponse } from './core/interfaces/response.interface';
 
 @Controller()
 export class AppController {
-  // constructor() {}
-
-  @Get()
-  testException(): IResponse {
-    throw new BadRequestException({
-      message: 'Test exception',
-      cause: new Error('Test exception'),
-      code: ExceptionConstants.BadRequestCodes.INVALID_INPUT,
-      description: 'Test exception',
-    });
+  @Get('/health-check')
+  healthCheck(): IResponse {
+    return {
+      _data: new Date(),
+      _metadata: {
+        message: 'Health check success.',
+        statusCode: HttpStatus.OK,
+      },
+    };
   }
 }

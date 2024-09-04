@@ -9,7 +9,6 @@ import { NestFactory } from '@nestjs/core';
 import * as cluster from 'cluster';
 import { WinstonModule } from 'nest-winston';
 import * as os from 'os';
-import helmet from 'helmet';
 import { AppModule } from './app.module';
 
 const logger = new Logger('bootstrap');
@@ -20,7 +19,6 @@ async function bootstrap() {
   });
 
   app.enableCors();
-  app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
   const configService = app.get(ConfigService);
   const tz = configService.get<string>('app.tz');

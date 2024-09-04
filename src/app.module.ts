@@ -12,7 +12,6 @@ import {
 } from '@core/filters';
 import { RequestLoggerMiddleware } from '@core/middleware/logging.middleware';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TimeoutInterceptor } from './core/interceptors/timeout.interceptor';
 import { RouterModule } from './modules/router.module';
 import { InternalServerErrorExceptionFilter } from './core/filters/internal-server.exception-filter';
@@ -22,7 +21,6 @@ import { ValidationExceptionFilter } from './core/filters/validatin.exception-fi
   imports: [CommonModule, RouterModule.forRoot()],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
