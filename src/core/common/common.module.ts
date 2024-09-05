@@ -24,17 +24,18 @@ import { PrismaModule } from '@shared/prisma/prisma.module';
         ENABLE_VERSION: Joi.boolean().required(),
         VERSION_PREFIX: Joi.string().required(),
         DEFAULT_VERSION: Joi.string().required(),
-        TZ: Joi.string().required(),
+        // TZ: Joi.string().required(),
+
         // auth config
-        AUTH_JWT_ACCESS_TOKEN_EXPIRED: Joi.string().default('15m').required(),
-        AUTH_JWT_ACCESS_TOKEN_SECRET_KEY: Joi.string().alphanum().min(5).max(50).required(),
-        AUTH_JWT_REFRESH_TOKEN_EXPIRED: Joi.string().default('182d').required(),
-        AUTH_JWT_REFRESH_TOKEN_SECRET_KEY: Joi.string().alphanum().min(5).max(50).required(),
-        AUTH_JWT_PAYLOAD_ENCRYPT: Joi.boolean().default(false).required(),
-        AUTH_JWT_PAYLOAD_ACCESS_TOKEN_ENCRYPT_KEY: Joi.string().allow(null, '').min(5).max(50).optional(),
-        AUTH_JWT_PAYLOAD_ACCESS_TOKEN_ENCRYPT_IV: Joi.string().allow(null, '').min(5).max(50).optional(),
-        AUTH_JWT_PAYLOAD_REFRESH_TOKEN_ENCRYPT_KEY: Joi.string().allow(null, '').min(5).max(50).optional(),
-        AUTH_JWT_PAYLOAD_REFRESH_TOKEN_ENCRYPT_IV: Joi.string().allow(null, '').min(5).max(50).optional(),
+        // AUTH_JWT_ACCESS_TOKEN_EXPIRED: Joi.string().default('15m').required(),
+        // AUTH_JWT_ACCESS_TOKEN_SECRET_KEY: Joi.string().alphanum().min(5).max(50).required(),
+        // AUTH_JWT_REFRESH_TOKEN_EXPIRED: Joi.string().default('182d').required(),
+        // AUTH_JWT_REFRESH_TOKEN_SECRET_KEY: Joi.string().alphanum().min(5).max(50).required(),
+        // AUTH_JWT_PAYLOAD_ENCRYPT: Joi.boolean().default(false).required(),
+        // AUTH_JWT_PAYLOAD_ACCESS_TOKEN_ENCRYPT_KEY: Joi.string().allow(null, '').min(5).max(50).optional(),
+        // AUTH_JWT_PAYLOAD_ACCESS_TOKEN_ENCRYPT_IV: Joi.string().allow(null, '').min(5).max(50).optional(),
+        // AUTH_JWT_PAYLOAD_REFRESH_TOKEN_ENCRYPT_KEY: Joi.string().allow(null, '').min(5).max(50).optional(),
+        // AUTH_JWT_PAYLOAD_REFRESH_TOKEN_ENCRYPT_IV: Joi.string().allow(null, '').min(5).max(50).optional(),
 
         // swagger config
         SW_USERNAME: Joi.string().default('nest').required(),
