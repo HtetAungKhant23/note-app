@@ -6,12 +6,22 @@ import { createDocument } from '@core/docs/swagger';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import * as cluster from 'cluster';
+import axios from 'axios';
 import { WinstonModule } from 'nest-winston';
-import * as os from 'os';
 import { AppModule } from './app.module';
 
 const logger = new Logger('bootstrap');
+
+function keepAliveServer() {
+  const url = 'https://a-saung.onrender.com/api/v1/health-check';
+  axios
+    .get(url)
+    .then(() => {})
+    .catch((e) => {
+      console.error(e);
+    });
+}
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
@@ -38,22 +48,8 @@ async function bootstrap() {
   }
   createDocument(app);
   await app.listen(PORT);
+  setInterval(keepAliveServer, 60000);
   logger.log(`Application listening on port ${PORT}`);
 }
 
-if (process.env.CLUSTERING === 'true') {
-  const numCPUs = os.cpus().length;
-  if ((cluster as any).isMaster) {
-    logger.log(`Master process is running with PID ${process.pid}`);
-    for (let i = 0; i < numCPUs; i += 1) {
-      (cluster as any).fork();
-    }
-    (cluster as any).on('exit', (worker: any, code: any, signal: any) => {
-      logger.debug(`Worker process ${worker.process.pid} exited with code ${code} and signal ${signal}`);
-    });
-  } else {
-    bootstrap();
-  }
-} else {
-  bootstrap();
-}
+bootstrap();
