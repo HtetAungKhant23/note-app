@@ -15,6 +15,10 @@ export class GuestEntity {
 
   day: number;
 
+  spendAmount: number;
+
+  totalMonth: number;
+
   constructor(
     id: string,
     name: string,
@@ -23,6 +27,8 @@ export class GuestEntity {
     startDate: Date | undefined,
     dueDate: Date | undefined,
     day: number,
+    spendAmount: number,
+    totalMonth: number,
   ) {
     this.id = id;
     this.name = name;
@@ -31,5 +37,7 @@ export class GuestEntity {
     this.stratDate = startDate;
     this.dueDate = dueDate;
     this.day = day;
+    this.spendAmount = spendAmount;
+    this.totalMonth = totalMonth;
   }
 }

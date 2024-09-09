@@ -7,6 +7,7 @@ import { CreateGuestDto } from './dto/create-guest.dto';
 import { GuestProfileDto } from './dto/guest-profile.dto';
 import { BookingPeriodDto } from './dto/booking.dto';
 import { GuestEntity } from './entity/guest.entity';
+import { BookingEntity } from './entity/booking.entity';
 
 @Injectable()
 export class GuestService {
@@ -38,6 +39,58 @@ export class GuestService {
         guest.bookingPeriod[0]?.startDate,
         guest.bookingPeriod[0]?.dueDate,
         0,
+        0,
+        0,
+      );
+    });
+  }
+
+  async fetchGuestProfileDetail(guestId: string) {
+    const guest = await this.findGuest(guestId);
+    if (!guest) {
+      throw new BadRequestException({
+        message: 'Guest not found.',
+        code: ExceptionConstants.BadRequestCodes.RESOURCE_NOT_FOUND,
+      });
+    }
+    const { spendAmount, totalMonth } = guest.bookingPeriod.reduce(
+      (totals, booking) => {
+        totals.spendAmount += booking.price;
+        totals.totalMonth += booking.period;
+        return totals;
+      },
+      { spendAmount: 0, totalMonth: 0 },
+    );
+    return new GuestEntity(
+      guest.id,
+      guest.name,
+      guest.phone,
+      guest.gender,
+      guest.bookingPeriod[0]?.startDate,
+      guest.bookingPeriod[guest.bookingPeriod.length - 1]?.dueDate,
+      0,
+      spendAmount,
+      totalMonth,
+    );
+  }
+
+  async fetchGuestBookings(guestId: string) {
+    const guest = await this.findGuest(guestId);
+    if (!guest) {
+      throw new BadRequestException({
+        message: 'Guest not found.',
+        code: ExceptionConstants.BadRequestCodes.RESOURCE_NOT_FOUND,
+      });
+    }
+    return guest.bookingPeriod.map((booking) => {
+      return new BookingEntity(
+        booking.remark || '',
+        booking.startDate,
+        booking.dueDate,
+        booking.period,
+        booking.seater,
+        booking.price,
+        booking.status,
       );
     });
   }
@@ -75,6 +128,8 @@ export class GuestService {
             currentbookingPeriod?.startDate,
             currentbookingPeriod?.dueDate,
             dayDiff,
+            0,
+            0,
           ),
         );
       }
@@ -185,7 +240,16 @@ export class GuestService {
   }
 
   private async findGuest(id: string) {
-    return this.dbService.guest.findUnique({ where: { id, isDeleted: false } });
+    return this.dbService.guest.findUnique({
+      where: { id, isDeleted: false },
+      include: {
+        bookingPeriod: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
+      },
+    });
   }
 
   private async findGuestWithPhone(phone: string) {

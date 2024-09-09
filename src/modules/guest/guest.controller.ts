@@ -81,6 +81,52 @@ export class GuestController {
     }
   }
 
+  @Get(':id')
+  @ApiOperation({ description: 'Fetch guest profile detail' })
+  @ApiParam({ name: 'id', type: String })
+  async fetchGuestProfileDetail(@Param('id') guestId: string): Promise<IResponse> {
+    try {
+      const guest = await this.guestService.fetchGuestProfileDetail(guestId);
+      return {
+        _data: guest,
+        _metadata: {
+          message: "Guest's profile successfully fetched.",
+          statusCode: HttpStatus.OK,
+        },
+      };
+    } catch (err) {
+      throw new BadRequestException({
+        message: err.message,
+        cause: new Error(err),
+        code: ExceptionConstants.BadRequestCodes.UNEXPECTED_ERROR,
+        description: 'Failed to fetch guest profile.',
+      });
+    }
+  }
+
+  @Get(':id/booking')
+  @ApiOperation({ description: 'Fetch all guest' })
+  @ApiParam({ name: 'id', type: String })
+  async fetchGuestBookings(@Param('id') guestId: string): Promise<IResponse> {
+    try {
+      const guestBookings = await this.guestService.fetchGuestBookings(guestId);
+      return {
+        _data: guestBookings,
+        _metadata: {
+          message: 'Guest booking list successfully fetched.',
+          statusCode: HttpStatus.OK,
+        },
+      };
+    } catch (err) {
+      throw new BadRequestException({
+        message: err.message,
+        cause: new Error(err),
+        code: ExceptionConstants.BadRequestCodes.UNEXPECTED_ERROR,
+        description: 'Failed to fetch guest booking list.',
+      });
+    }
+  }
+
   @Patch(':id/profile')
   @ApiOperation({ description: 'Update guest profile' })
   @ApiParam({ name: 'id', type: String })
