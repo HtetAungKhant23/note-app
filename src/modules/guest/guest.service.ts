@@ -6,19 +6,38 @@ import * as dayjs from 'dayjs';
 import { CreateGuestDto } from './dto/create-guest.dto';
 import { GuestProfileDto } from './dto/guest-profile.dto';
 import { BookingPeriodDto } from './dto/booking.dto';
+import { GuestEntity } from './entity/guest.entity';
 
 @Injectable()
 export class GuestService {
   constructor(private readonly dbService: PrismaService) {}
 
   async fetchGuest() {
-    return this.dbService.guest.findMany({
+    const guests = await this.dbService.guest.findMany({
       where: {
         isDeleted: false,
       },
-      include: {
-        bookingPeriod: true,
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        gender: true,
+        bookingPeriod: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
+    });
+    return guests.map((guest) => {
+      return new GuestEntity(
+        guest.id,
+        guest.name,
+        guest.phone,
+        guest.gender,
+        guest.bookingPeriod[0]?.startDate,
+        guest.bookingPeriod[0]?.dueDate,
+      );
     });
   }
 
