@@ -11,14 +11,25 @@ export class GuestEntity {
 
   stratDate: Date | undefined;
 
-  endDate: Date | undefined;
+  dueDate: Date | undefined;
 
-  constructor(id: string, name: string, phone: string, gender: GENDER, startDate: Date | undefined, endDate: Date | undefined) {
+  day: number;
+
+  constructor(
+    id: string,
+    name: string,
+    phone: string,
+    gender: GENDER,
+    startDate: Date | undefined,
+    dueDate: Date | undefined,
+    day: number,
+  ) {
     this.id = id;
     this.name = name;
     this.phone = phone;
     this.gender = gender;
     this.stratDate = startDate;
-    this.endDate = endDate;
+    this.dueDate = dueDate;
+    this.day = day;
   }
 }

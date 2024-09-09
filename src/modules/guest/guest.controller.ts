@@ -59,6 +59,28 @@ export class GuestController {
     }
   }
 
+  @Get('extend-in-one-week')
+  @ApiOperation({ description: 'Fetch guest to paid within one week' })
+  async guestToPExtendInOneWeek(): Promise<IResponse> {
+    try {
+      const guests = await this.guestService.guestToExtendInOneWeek();
+      return {
+        _data: guests,
+        _metadata: {
+          message: 'Guests to extend in one week successfully fetched.',
+          statusCode: HttpStatus.OK,
+        },
+      };
+    } catch (err) {
+      throw new BadRequestException({
+        message: err.message,
+        cause: new Error(err),
+        code: ExceptionConstants.BadRequestCodes.UNEXPECTED_ERROR,
+        description: 'Failed to fetch guest to extend in one week.',
+      });
+    }
+  }
+
   @Patch(':id/profile')
   @ApiOperation({ description: 'Update guest profile' })
   @ApiParam({ name: 'id', type: String })

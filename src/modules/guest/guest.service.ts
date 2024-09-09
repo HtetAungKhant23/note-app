@@ -37,8 +37,49 @@ export class GuestService {
         guest.gender,
         guest.bookingPeriod[0]?.startDate,
         guest.bookingPeriod[0]?.dueDate,
+        0,
       );
     });
+  }
+
+  async guestToExtendInOneWeek() {
+    const guests = await this.dbService.guest.findMany({
+      where: {
+        isDeleted: false,
+      },
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        gender: true,
+        bookingPeriod: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    });
+    const guestRes = [];
+    const today = dayjs().startOf('date');
+    for (let i = 0; i < guests.length; i += 1) {
+      const guest = guests[i];
+      const currentbookingPeriod = guest?.bookingPeriod[0];
+      const dayDiff = dayjs(currentbookingPeriod?.dueDate).diff(today, 'day');
+      if (dayDiff <= 7) {
+        guestRes.push(
+          new GuestEntity(
+            guest?.id || '',
+            guest?.name || '',
+            guest?.phone || '',
+            guest?.gender || 'M',
+            currentbookingPeriod?.startDate,
+            currentbookingPeriod?.dueDate,
+            dayDiff,
+          ),
+        );
+      }
+    }
+    return guestRes;
   }
 
   async createGuest(dto: CreateGuestDto) {
