@@ -200,7 +200,7 @@ export class GuestService {
       });
     }
 
-    if (dto?.phone) {
+    if (dto?.phone && dto?.phone !== guest.phone) {
       const existPhone = await this.findGuestWithPhone(dto.phone);
       if (existPhone) {
         throw new BadRequestException({
