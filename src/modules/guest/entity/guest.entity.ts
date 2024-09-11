@@ -9,7 +9,7 @@ export class GuestEntity {
 
   gender: GENDER;
 
-  stratDate: Date | undefined;
+  startDate: Date | undefined;
 
   dueDate: Date | undefined;
 
@@ -34,7 +34,7 @@ export class GuestEntity {
     this.name = name;
     this.phone = phone;
     this.gender = gender;
-    this.stratDate = startDate;
+    this.startDate = startDate;
     this.dueDate = dueDate;
     this.day = day;
     this.spendAmount = spendAmount;
