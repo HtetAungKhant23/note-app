@@ -175,12 +175,14 @@ export class GuestService {
       });
     }
 
+    const startDate = guest.bookingPeriod[guest.bookingPeriod.length - 1]?.dueDate || dayjs().set('hours', 9).toDate();
+
     return this.dbService.bookingPeriod.create({
       data: {
         guestId: guest.id,
         remark: dto?.remark || '',
-        startDate: dayjs(dto.startDate).set('hours', 9).toDate(),
-        dueDate: dayjs(dto.startDate).add(dto.period, 'months').set('hours', 9).toDate(),
+        startDate,
+        dueDate: dayjs(startDate).add(dto.period, 'months').set('hours', 9).toDate(),
         period: dto.period,
         seater: dto.seater,
         price: dto.price,

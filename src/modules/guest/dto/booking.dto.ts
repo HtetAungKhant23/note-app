@@ -8,8 +8,8 @@ export class BookingPeriodDto {
   remark?: string;
 
   @ApiProperty({ type: Date })
-  @IsNotEmpty()
-  startDate: Date;
+  @IsOptional()
+  startDate?: Date;
 
   @ApiProperty({ type: Number })
   @IsNotEmpty()
