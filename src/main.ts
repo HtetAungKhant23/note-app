@@ -13,16 +13,9 @@ import { AppModule } from './app.module';
 const logger = new Logger('bootstrap');
 
 function keepAliveServer() {
-  const url = 'https://a-saung.onrender.com/api/v1/health-check';
-  const kokyaw_url = 'https://password-strength-backend.onrender.com/classify_password?password=123';
+  const url = '';
   axios
     .get(url)
-    .then(() => {})
-    .catch((e) => {
-      console.error(e);
-    });
-  axios
-    .get(kokyaw_url)
     .then(() => {})
     .catch((e) => {
       console.error(e);
