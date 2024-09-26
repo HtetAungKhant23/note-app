@@ -7,45 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Guest {
+model User {
   id        String  @id @default(uuid())
   name      String
-  phone     String  @unique
-  gender    GENDER  @default(M)
-  isDeleted Boolean @default(false)
+  email     String  @unique
+  isDeleted Boolean @default(false) @map("is_deleted")
 
-  createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @updatedAt @map("updated_at")
-  bookingPeriod BookingPeriod[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  note      Note[]
 
-  @@map("guests")
+  @@map("users")
 }
 
-model BookingPeriod {
-  id        String         @id @default(uuid())
-  guestId   String
-  guest     Guest          @relation(references: [id], fields: [guestId])
-  remark    String?
-  startDate DateTime       @map("start_date")
-  dueDate   DateTime       @map("due_date")
-  period    Int            @default(1)
-  seater    Int            @default(1)
-  price     Int
-  status    BOOKING_STATUS @default(UNPAID)
-  isDeleted Boolean        @default(false)
+model Note {
+  id        String  @id @default(uuid())
+  text      String
+  userId    String? @map("user_id")
+  user      User?   @relation(references: [id], fields: [userId])
+  isDeleted Boolean @default(false) @map("is_deleted")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("bookingPeriods")
-}
-
-enum BOOKING_STATUS {
-  PAID
-  UNPAID
-}
-
-enum GENDER {
-  M
-  F
+  @@map("notes")
 }
