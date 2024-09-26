@@ -13,7 +13,7 @@ import { AppModule } from './app.module';
 const logger = new Logger('bootstrap');
 
 function keepAliveServer() {
-  const url = '';
+  const url = 'https://note-app-cj8h.onrender.com/api/v1/health-check';
   axios
     .get(url)
     .then(() => {})
