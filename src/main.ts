@@ -6,21 +6,20 @@ import { createDocument } from '@core/docs/swagger';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import axios from 'axios';
 import { WinstonModule } from 'nest-winston';
 import { AppModule } from './app.module';
 
 const logger = new Logger('bootstrap');
 
-function keepAliveServer() {
-  const url = 'https://note-app-cj8h.onrender.com/api/v1/health-check';
-  axios
-    .get(url)
-    .then(() => {})
-    .catch((e) => {
-      console.error(e);
-    });
-}
+// function keepAliveServer() {
+//   const url = 'https://note-app-cj8h.onrender.com/api/v1/health-check';
+//   axios
+//     .get(url)
+//     .then(() => {})
+//     .catch((e) => {
+//       console.error(e);
+//     });
+// }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -48,7 +47,7 @@ async function bootstrap() {
   }
   createDocument(app);
   await app.listen(PORT);
-  setInterval(keepAliveServer, 60000);
+  // setInterval(keepAliveServer, 60000);
   logger.log(`Application listening on port ${PORT}`);
 }
 
