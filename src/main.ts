@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { WinstonModule } from 'nest-winston';
 import { AppModule } from './app.module';
+// import { ClusterService } from './app-cluster';
 
 const logger = new Logger('bootstrap');
 
@@ -51,4 +52,5 @@ async function bootstrap() {
   logger.log(`Application listening on port ${PORT}`);
 }
 
+// ClusterService.clusterize(bootstrap);
 bootstrap();

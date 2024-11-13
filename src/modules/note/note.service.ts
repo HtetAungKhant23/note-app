@@ -23,6 +23,8 @@ export class NoteService implements INoteServie {
       where: {
         isDeleted: false,
       },
+      take: 100,
+      skip: Math.random() * 100,
     });
     return notes.map((note) => {
       return new NoteEntity(note.id, note.text, note.updatedAt, note.isDeleted);
