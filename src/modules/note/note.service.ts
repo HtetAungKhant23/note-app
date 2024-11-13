@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '@app/shared/prisma/prisma.service';
 import { ExceptionConstants } from '@app/core/exceptions/constants';
 import { INoteServie } from './interfaces/note-service.interface';
@@ -24,8 +24,8 @@ export class NoteService implements INoteServie {
         isDeleted: false,
       },
       take: 100,
-      skip: Math.random() * 100,
     });
+    Logger.log('all note len', notes.length);
     return notes.map((note) => {
       return new NoteEntity(note.id, note.text, note.updatedAt, note.isDeleted);
     });
